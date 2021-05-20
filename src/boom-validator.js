@@ -115,12 +115,17 @@ function BoomValidator(options) {
         }
     }
 
-    this.regex = (elem, message = DEFAULTS.validation.rules.messages['regex'], regex) => {
-        if (!regex.test(elem.value)) {
-            this.showErrorMessage(elem, message);
+    this.regex = (elem, message = DEFAULTS.validation.rules.messages['regex'], regex, showError = true) => {
+        let re = new RegExp(regex);
+        if (!re.test(elem.value)) {
+            if (showError) {
+                this.showErrorMessage(elem, message);
+            }
             return false;
         } else {
-            this.hideErrorMessage(elem);
+            if (showError) {
+                this.hideErrorMessage(elem);
+            }
             return true;
         }
     }
@@ -155,16 +160,25 @@ function BoomValidator(options) {
         }
     }
 
-    this.email = () => {
+    this.email = (elem, message = DEFAULTS.validation.rules.messages['email']) => {
 
-        console.log('email');
+        if (this.regex(elem, message, '^[^\\s@]+@[^\\s@]+$', false)) {
+            this.hideErrorMessage(elem, message);
+            return true;
+        } else {
+            this.showErrorMessage(elem, message);
+            return false;
+        }
     }
 
     this.contact = (elem, message = DEFAULTS.validation.rules.messages['contact']) => {
-        if (!/^\d{10}$/.test(elem.value)) {
+
+        if (!this.regex(elem, message, '^\\d{10}$', false)) {
             this.showErrorMessage(elem, message);
+            return false;
         } else {
             this.hideErrorMessage(elem);
+            return true;
         }
     }
 
