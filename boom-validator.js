@@ -82,14 +82,14 @@ function BoomValidation(options) {
     }
 
     // validate based on rules
-  this.required = (elem, message = DEFAULTS.validation.rules.messages['required']) => {
-      if (elem.value === ''  || elem.length === 0) {
-          this.showErrorMessage(elem, message);
-          return false;
-      } else {
-          this.hideErrorMessage(elem);
-          return true;
-      }
+    this.required = (elem, message = DEFAULTS.validation.rules.messages['required']) => {
+        if (elem.value === '' || elem.length === 0) {
+            this.showErrorMessage(elem, message);
+            return false;
+        } else {
+            this.hideErrorMessage(elem);
+            return true;
+        }
     }
 
     this.regex = (elem, message = DEFAULTS.validation.rules.messages['regex'], regex) => {
@@ -113,7 +113,7 @@ function BoomValidation(options) {
     }
 
     this.max_length = (elem, message = DEFAULTS.validation.rules.messages['max_length'], max) => {
-        if(elem.value.length > parseInt(max, 10)) {
+        if (elem.value.length > parseInt(max, 10)) {
             this.showErrorMessage(elem, message);
             return false;
         } else {
@@ -123,7 +123,7 @@ function BoomValidation(options) {
     }
 
     this.min_length = (elem, message = DEFAULTS.validation.rules.messages['min_length'], min) => {
-        if(elem.value.length < parseInt(min, 10)) {
+        if (elem.value.length < parseInt(min, 10)) {
             this.showErrorMessage(elem, message);
             return false;
         } else {
@@ -171,23 +171,23 @@ function BoomValidation(options) {
         let errors = [];
 
         // loop through each rule
-        for(let j = 0; j < rules.length; j++) {
-          // get the current rule
-          let currentRule = rules[j];
+        for (let j = 0; j < rules.length; j++) {
+            // get the current rule
+            let currentRule = rules[j];
 
-          // split the string by = (get key/value pair)
-          let splitted = currentRule.split('=');
+            // split the string by = (get key/value pair)
+            let splitted = currentRule.split('=');
 
-          let defaultMessage = DEFAULTS['validation']['rules']['messages'][currentRule];
+            let defaultMessage = DEFAULTS['validation']['rules']['messages'][currentRule];
 
-          // invoke the function with the validation logic
+            // invoke the function with the validation logic
             let invoker = this[splitted[0]](elem, messages ? messages[splitted[0]] : defaultMessage, splitted[1]);
 
             errors.push(
                 {
                     "element": elem,
-                    "rule" : rules[j],
-                    "isValid" : invoker,
+                    "rule": rules[j],
+                    "isValid": invoker,
                 }
             );
         }
