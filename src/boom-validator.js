@@ -18,7 +18,7 @@ const DEFAULTS = {
 }
 
 
-function BoomValidation(options) {
+function BoomValidator(options) {
     this.options = options;
     this.option = {};
     this.invalidFormFields = [];
@@ -83,12 +83,35 @@ function BoomValidation(options) {
 
     // validate based on rules
     this.required = (elem, message = DEFAULTS.validation.rules.messages['required']) => {
-        if (elem.value === '' || elem.length === 0) {
-            this.showErrorMessage(elem, message);
-            return false;
-        } else {
-            this.hideErrorMessage(elem);
-            return true;
+        switch (elem.type) {
+            case 'select':
+            case 'textarea':
+            case 'number':
+            case 'email':
+            case 'text':
+                if (elem.value === '' || elem.length === 0) {
+                    this.showErrorMessage(elem, message);
+                    return false;
+                } else {
+                    this.hideErrorMessage(elem);
+                    return true;
+                }
+            case 'checkbox':
+            case 'radio':
+                if (!elem.checked) {
+                    this.showErrorMessage(elem, message);
+                    return false;
+                } else {
+                    if (elem.checked === 'false') {
+                        this.showErrorMessage(elem, message);
+                        return false;
+                    } else {
+                        this.hideErrorMessage(elem);
+                        return true;
+                    }
+                }
+            default:
+                break;
         }
     }
 
@@ -138,7 +161,6 @@ function BoomValidation(options) {
     }
 
     this.contact = (elem, message = DEFAULTS.validation.rules.messages['contact']) => {
-        console.log(/^\d{10}$/.test(elem.value), elem.value.length)
         if (!/^\d{10}$/.test(elem.value)) {
             this.showErrorMessage(elem, message);
         } else {
@@ -207,7 +229,6 @@ function BoomValidation(options) {
             }
 
             // handle for selects inputs
-            console.log(elem.tagName);
             if (elem.tagName == 'SELECT') {
                 elem.addEventListener('change', e => {
                     if (!this.validate(currentOption, elem)) {
@@ -247,3 +268,5 @@ function BoomValidation(options) {
 
     }
 }
+
+module.exports = BoomValidator;

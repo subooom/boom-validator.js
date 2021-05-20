@@ -31,7 +31,7 @@ Clone the repository and import it in your project. Currently, the package doesn
 ### 2. Initiate the bool-validator by passing the options as parameter:
 
 ```javascript
-    let boomValidator = new BoomValidation(options);
+    let boomValidator = new BoomValidator(options);
 ```
 
 ### 3. Check if the form is valid by:
